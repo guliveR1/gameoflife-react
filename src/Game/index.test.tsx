@@ -1,13 +1,13 @@
 import { shallow } from 'enzyme';
-import App from './App';
-import Board from './Board';
-import Controls from './Controls';
+import Game from '.';
+import Board from '../Board';
+import Controls from '../Controls';
 
 describe('App', () => {
   let appWrapper;
 
   beforeEach(() => {
-    appWrapper = shallow(<App />);
+    appWrapper = shallow(<Game />);
   })
 
   it('renders App component', () => {

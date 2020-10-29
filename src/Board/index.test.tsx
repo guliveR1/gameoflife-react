@@ -56,6 +56,6 @@ describe('Board', () => {
     ]);
     const cells = boardWrapper.find(Cell);
 
-    cells.forEach(cell => expect(cell.props().status).toEqual(1));
+    cells.forEach(cell => expect(cell.props().isAlive).toEqual(1));
   });
 });

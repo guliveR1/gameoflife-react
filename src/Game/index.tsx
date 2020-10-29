@@ -1,8 +1,8 @@
-import Board from './Board';
-import Controls from './Controls';
+import Board from '../Board';
+import Controls from '../Controls';
 import React from 'react';
 
-class App extends React.Component {
+class Game extends React.Component {
   state = {
     gameBoard: []
   };
@@ -17,4 +17,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Game;
