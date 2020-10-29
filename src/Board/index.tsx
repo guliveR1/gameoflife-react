@@ -1,26 +1,25 @@
-import Cell from '../Cell';
+import Row from '../Row';
 import React from 'react';
+import { render } from 'enzyme';
 
-const renderCell = (isAlive: boolean, index: number) => {
-  return <Cell key={index} isAlive={isAlive} />;
+export interface BoardProps {
+  gameBoard: boolean[][],
+  onCellClick: (rowIndex: number, cellIndex: number) => void
 }
 
-const renderRow = (row: boolean[], index: number) => {
-  return (
-    <div key={index}>
-      {row.map(renderCell)}
-    </div>
-  );
-};
+const Board = ({gameBoard = [], onCellClick}: BoardProps) => {
+  const renderRows = () => {
+    return gameBoard.map((cells, rowIndex) => 
+      <Row 
+        key={rowIndex} 
+        rowIndex={rowIndex} 
+        cells={cells} 
+        onCellClick={onCellClick}
+      />
+    )
+  };
 
-const renderRows = (board: boolean[][]) => {
-  if (board.length === 0) return 'Board unavailable';
-
-  return board.map(renderRow);
-};
-
-const Board = ({gameBoard = []}) => {
-  return <>{renderRows(gameBoard)}</>;
+  return <>{renderRows()}</>;
 };
 
 export default Board;

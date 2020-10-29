@@ -1,5 +1,7 @@
+import { ReactWrapper } from "enzyme";
+
 class CellDriver {
-  constructor(private wrapper) {
+  constructor(private wrapper: ReactWrapper<any>) {
   }
 
   get isAlive() {

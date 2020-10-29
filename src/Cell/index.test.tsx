@@ -1,29 +1,30 @@
-import {shallow} from 'enzyme';
-import Cell from '.';
+import {mount, shallow} from 'enzyme';
+import Cell, {CellProps} from '.';
 import CellDriver from './index.driver';
+import React from 'react';
 
-const renderCell = (props) => {
-  const wrapper = shallow(<Cell {...props} />);
+const renderCell = (props: CellProps) => {
+  const wrapper = mount(<Cell {...props} />);
 
   return new CellDriver(wrapper);
 };
 
 describe('Cell', () => {
   it('renders without crashing', () => {
-    const cellWrapper = shallow(<Cell />);
+    const cellWrapper = shallow(<Cell isAlive={true} cellIndex={0} onCellClick={jest.fn} />);
     const block = cellWrapper.find('div');
 
     expect(block).toHaveLength(1);
   });
 
   it('renders alive cell', () => {
-    const cellDriver = renderCell({isAlive: true});
+    const cellDriver = renderCell({isAlive: true, cellIndex: 0, onCellClick: jest.fn});
 
     expect(cellDriver.isAlive).toBeTruthy();
   });
 
   it('renders dead cell', () => {
-    const cellDriver = renderCell({isAlive: false});
+    const cellDriver = renderCell({isAlive: false, cellIndex: 0, onCellClick: jest.fn});
 
     expect(cellDriver.isAlive).toBeFalsy();
   });
@@ -33,13 +34,12 @@ describe('Cell', () => {
 
     const cellDriver = renderCell({
       isAlive: false,
-      rowIndex: 0,
       cellIndex: 0,
       onCellClick
     });
 
     cellDriver.click();
 
-    expect(onCellClick).toBeCalledWith(0, 0);
+    expect(onCellClick).toBeCalledWith(0);
   });
 });

@@ -1,10 +1,16 @@
 import React from 'react';
 
-const Cell = ({isAlive, rowIndex, cellIndex, onCellClick}) => {
+export interface CellProps {
+  isAlive: boolean,
+  cellIndex: number,
+  onCellClick: (index: number) => void
+}
+
+const Cell = ({isAlive, cellIndex, onCellClick}: CellProps) => {
   return (<div
     data-hook="cell"
     className={isAlive ? 'alive' : ''}
-    onClick={() => onCellClick(rowIndex, cellIndex)}
+    onClick={() => onCellClick(cellIndex)}
   ></div>);
 }
 

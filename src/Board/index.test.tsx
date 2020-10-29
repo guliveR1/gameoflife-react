@@ -1,61 +1,50 @@
-import {shallow} from 'enzyme';
-import Board from '.';
-import Cell from '../Cell';
+import {mount} from 'enzyme';
+import Board, {BoardProps} from '.';
+import React from 'react';
+import BoardDriver from './index.driver';
 
-const renderBoard = (board) => {
-  return shallow(<Board gameBoard={board} />);
+const renderBoard = (props: BoardProps) => {
+  const wrapper = mount(<Board {...props} />);
+  
+  return new BoardDriver(wrapper);
 };
 
 describe('Board', () => {
-  it('renders "Board unavailable" when gameBoard is undefined', () => {
-    const boardWrapper = renderBoard();
+  it('renders one row', () => {
+    const boardDriver = renderBoard({
+      gameBoard: [
+        [true]
+      ],
+      onCellClick: jest.fn
+    });
 
-    expect(boardWrapper.text()).toEqual('Board unavailable');
+    expect(boardDriver.rows).toHaveLength(1);
   });
 
-  it('renders 1 row div when gameBoard row size is 1', () => {
-    const boardWrapper = renderBoard([
-      [1]
-    ]);
-    const rowDivs = boardWrapper.find('div');
+  it('renders two rows', () => {
+    const boardDriver = renderBoard({
+      gameBoard: [
+        [true],
+        [true]
+      ],
+      onCellClick: jest.fn
+    });
 
-    expect(rowDivs).toHaveLength(1);
+    expect(boardDriver.rows).toHaveLength(2);
   });
 
-  it('renders 2 row div when gameBoard row size is 2', () => {
-    const boardWrapper = renderBoard([
-      [1],
-      [1]
-    ]);
-    const rowDivs = boardWrapper.find('div');
+  it('fires onCellClick when clicking a cell', () => {
+    const onCellClick = jest.fn();
 
-    expect(rowDivs).toHaveLength(2);
-  });
+    const boardDriver = renderBoard({
+      gameBoard: [
+        [true]
+      ],
+      onCellClick
+    });
 
-  it('renders one Cell when gameBoard size is 1x1', () => {
-    const boardWrapper = renderBoard([[1]]);
-    const cells = boardWrapper.find(Cell);
+    boardDriver.rowAt(0).cellAt(0).click();
 
-    expect(cells).toHaveLength(1);
-  });
-
-  it('renders four Cells when gameBoard size is 2x2', () => {
-    const boardWrapper = renderBoard([
-      [1, 1],
-      [1, 1]
-    ]);
-    const cells = boardWrapper.find(Cell);
-
-    expect(cells).toHaveLength(4);
-  });
-
-  it('renders cells with value as status prop', () => {
-    const boardWrapper = renderBoard([
-      [1, 1],
-      [1, 1]
-    ]);
-    const cells = boardWrapper.find(Cell);
-
-    cells.forEach(cell => expect(cell.props().isAlive).toEqual(1));
+    expect(onCellClick).toBeCalledWith(0, 0);
   });
 });

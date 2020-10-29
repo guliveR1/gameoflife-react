@@ -1,9 +1,10 @@
 import {mount} from 'enzyme';
-import Row from '.';
+import Row, {RowProps} from '.';
 import RowDriver from './index.driver';
+import React from 'react';
 
-const renderRow = (props) => {
-  const wrapper = mount(<Row />);
+const renderRow = (props: RowProps) => {
+  const wrapper = mount(<Row {...props} />);
 
   return new RowDriver(wrapper);
 };
@@ -11,7 +12,9 @@ const renderRow = (props) => {
 describe('Row', () => {
   it('renders 1 cell', () => {
     const rowDriver = renderRow({
-      cells: [true]
+      cells: [true],
+      rowIndex: 0,
+      onCellClick: jest.fn
     });
 
     expect(rowDriver.cells).toHaveLength(1);
@@ -19,17 +22,36 @@ describe('Row', () => {
 
   it('renders 3 cells', () => {
     const rowDriver = renderRow({
-      cells: [true, true, true]
+      cells: [true, true, true],
+      rowIndex: 0,
+      onCellClick: jest.fn
     });
 
     expect(rowDriver.cells).toHaveLength(3);
   });
 
-  it('renders 2 alive cells', () => {
+  it('renders 1 alive cells and 1 dead cell', () => {
     const rowDriver = renderRow({
-      cells: [true, true]
+      cells: [true, false],
+      rowIndex: 0,
+      onCellClick: jest.fn
     });
 
-    rowDriver.cells.forEach(cell => expect(cell.isAlive).toBeTruthy());
+    expect(rowDriver.cellAt(0).isAlive).toBeTruthy();
+    expect(rowDriver.cellAt(1).isAlive).toBeFalsy();
+  });
+
+  it('fires onCellClick when clicking cell', () => {
+    const onCellClick = jest.fn();
+
+    const rowDriver = renderRow({
+      cells: [true],
+      rowIndex: 0,
+      onCellClick
+    });
+
+    rowDriver.cellAt(0).click();
+
+    expect(onCellClick).toBeCalledWith(0, 0);
   });
 });
