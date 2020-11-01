@@ -3,9 +3,11 @@ import Controls from '../Controls';
 import React from 'react';
 import GameModel from './models/game';
 import { config } from '../../config';
+import './index.css';
 
 export interface GameState {
-  gameBoard: GameModel
+  gameBoard: GameModel,
+  runInterval?: any
 };
 
 export interface GameProps {
@@ -14,7 +16,7 @@ export interface GameProps {
 };
 
 class Game extends React.Component<GameProps, GameState> {
-  state = {
+  state: GameState = {
     gameBoard: new GameModel(this.props.rowSize, this.props.colSize)
   };
 
@@ -35,14 +37,40 @@ class Game extends React.Component<GameProps, GameState> {
   }
 
   handleRun() {
-    setInterval(this.handleStep.bind(this), config.runInterval);
+    const runInterval = setInterval(this.handleStep.bind(this), config.runInterval);
+
+    this.setState({runInterval});
+  }
+
+  handleClear() {
+    this.setState({
+      gameBoard: new GameModel(this.props.rowSize, this.props.colSize)
+    });
+  }
+
+  handleStop() {
+    if (this.state.runInterval) {
+      clearInterval(this.state.runInterval);
+
+      this.setState({runInterval: undefined});
+    }
   }
 
   render() {
     return (
-      <div>
-        <Board data-hook="board" gameBoard={this.state.gameBoard.board} onCellClick={this.handleCellClick.bind(this)} />
-        <Controls data-hook="controls" onStep={this.handleStep.bind(this)} onRun={(this.handleRun.bind(this))} />
+      <div className="game">
+        <Board 
+          data-hook="board" 
+          gameBoard={this.state.gameBoard.board} 
+          onCellClick={this.handleCellClick.bind(this)} 
+        />
+        <Controls 
+          data-hook="controls" 
+          onStep={this.handleStep.bind(this)} 
+          onRun={this.handleRun.bind(this)} 
+          onClear={this.handleClear.bind(this)}
+          onStop={this.handleStop.bind(this)}
+        />
       </div>
     );
   }

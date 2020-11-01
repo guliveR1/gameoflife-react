@@ -56,7 +56,7 @@ describe('App', () => {
   });
 
   it('performs 10 steps in 1 second when hitting run', (done) => {
-    const handleStepSpy = jest.spyOn(gameDriver.instance, 'handleStep');
+    const handleStepSpy = gameDriver.spyOn('handleStep');
 
     gameDriver.controls.clickRun();
 
@@ -65,4 +65,23 @@ describe('App', () => {
       done();
     }, config.runInterval * 11);
   });
+
+  it('clears the board when clicking clear', () => {
+    gameDriver.board.rowAt(0).cellAt(0).click();
+    gameDriver.controls.clickClear();
+
+    expect(gameDriver.board.rowAt(0).cellAt(0).isAlive).toBeFalsy();
+  });
+
+  it('stops current game from running when clicking stop', (done) => {
+    const handleStepSpy = gameDriver.spyOn('handleStep');
+
+    gameDriver.controls.clickRun();
+    gameDriver.controls.clickStop();
+
+    setTimeout(() => {
+      expect(handleStepSpy).toBeCalledTimes(0);
+      done();
+    }, config.runInterval * 1);
+  })
 });

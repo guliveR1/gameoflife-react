@@ -24,6 +24,10 @@ class GameDriver {
     update() {
         this.wrapper.update();
     }
+
+    spyOn(funcName: string) {
+        return jest.spyOn<any, any>(this.instance, funcName);
+    }
 }
 
 export default GameDriver;

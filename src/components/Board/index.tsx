@@ -1,6 +1,5 @@
 import Row from '../Row';
 import React from 'react';
-import { render } from 'enzyme';
 
 export interface BoardProps {
   gameBoard: boolean[][],

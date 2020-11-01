@@ -4,37 +4,37 @@ import React from 'react';
 import ControlsDriver from './index.driver';
 
 describe('Controls', () => {
+    let controlsDriver: ControlsDriver;
+
     const renderControls = (props: ControlsProps) => {
         const wrapper = mount(<Controls {...props} />);
     
         return new ControlsDriver(wrapper);
     }
 
-    it('renders step button', () => {
-        const controlsDriver = renderControls({
+    beforeEach(() => {
+        controlsDriver = renderControls({
             onStep: jest.fn,
-            onRun: jest.fn
+            onRun: jest.fn,
+            onClear: jest.fn,
+            onStop: jest.fn
         });
+    })
 
+    it('renders step button', () => {
         expect(controlsDriver.stepButton.text()).toEqual('Step');
     });
 
     it('renders run button', () => {
-        const controlsDriver = renderControls({
-            onStep: jest.fn,
-            onRun: jest.fn
-        });
-
         expect(controlsDriver.runButton.text()).toEqual('Run');
     });
 
-    it('renders stop button', () => {
-        const controlsDriver = renderControls({
-            onStep: jest.fn,
-            onRun: jest.fn
-        });
+    it('renders clear button', () => {
+        expect(controlsDriver.clearButton.text()).toEqual('Clear');
+    });
 
-        expect(controlsDriver.runButton.text()).toEqual('Run');
+    it('renders stop button', () => {
+        expect(controlsDriver.stopButton.text()).toEqual('Stop');
     });
 
     it('fires onStep when step button clicked', () => {
@@ -42,10 +42,12 @@ describe('Controls', () => {
 
         const controlsDriver = renderControls({
             onStep,
-            onRun: jest.fn
+            onRun: jest.fn,
+            onClear: jest.fn,
+            onStop: jest.fn
         });
 
-        controlsDriver.stepButton.simulate('click');
+        controlsDriver.clickStep();
 
         expect(onStep).toBeCalledTimes(1);
     });
@@ -55,11 +57,43 @@ describe('Controls', () => {
 
         const controlsDriver = renderControls({
             onStep: jest.fn,
-            onRun
+            onRun,
+            onClear: jest.fn,
+            onStop: jest.fn
         });
 
-        controlsDriver.runButton.simulate('click');
+        controlsDriver.clickRun();
 
         expect(onRun).toBeCalledTimes(1);
+    });
+
+    it('fires onClear when clear button clicked', () => {
+        const onClear = jest.fn();
+
+        const controlsDriver = renderControls({
+            onStep: jest.fn,
+            onRun: jest.fn,
+            onClear,
+            onStop: jest.fn
+        });
+
+        controlsDriver.clickClear();
+
+        expect(onClear).toBeCalledTimes(1);
+    });
+
+    it('fires onStop when stop button clicked', () => {
+        const onStop = jest.fn();
+
+        const controlsDriver = renderControls({
+            onStep: jest.fn,
+            onRun: jest.fn,
+            onClear: jest.fn,
+            onStop
+        });
+
+        controlsDriver.clickStop();
+
+        expect(onStop).toBeCalledTimes(1);
     });
 });
