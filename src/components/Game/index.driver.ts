@@ -16,6 +16,14 @@ class GameDriver {
     get controls() {
         return new ControlsDriver(this.wrapper.find('[data-hook="controls"]'));
     }
+
+    get instance() {
+        return this.wrapper.instance();
+    }
+
+    update() {
+        this.wrapper.update();
+    }
 }
 
 export default GameDriver;

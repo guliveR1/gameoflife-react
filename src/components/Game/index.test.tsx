@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import Game, { GameProps } from '.';
 import React from 'react';
 import GameDriver from './index.driver';
+import { config } from '../../config';
 
 describe('App', () => {
   let gameDriver: GameDriver;
@@ -14,8 +15,8 @@ describe('App', () => {
 
   beforeEach(() => {
     gameDriver = renderGame({
-      rowSize: 0,
-      colSize: 0
+      rowSize: 1,
+      colSize: 1
     });
   });
 
@@ -42,25 +43,26 @@ describe('App', () => {
   });
 
   it('revives dead cell when clicking it', () => {
-    gameDriver = renderGame({
-      rowSize: 1,
-      colSize: 1
-    });
-
     gameDriver.board.rowAt(0).cellAt(0).click();
 
     expect(gameDriver.board.rowAt(0).cellAt(0).isAlive).toBeTruthy();
   });
 
   it('performs a step when clicking step button', () => {
-    gameDriver = renderGame({
-      rowSize: 1,
-      colSize: 1
-    });
-
     gameDriver.board.rowAt(0).cellAt(0).click();
     gameDriver.controls.clickStep();
 
     expect(gameDriver.board.rowAt(0).cellAt(0).isAlive).toBeFalsy();
+  });
+
+  it('performs 10 steps in 1 second when hitting run', (done) => {
+    const handleStepSpy = jest.spyOn(gameDriver.instance, 'handleStep');
+
+    gameDriver.controls.clickRun();
+
+    setTimeout(() => {
+      expect(handleStepSpy).toBeCalledTimes(10);
+      done();
+    }, config.runInterval * 11);
   });
 });

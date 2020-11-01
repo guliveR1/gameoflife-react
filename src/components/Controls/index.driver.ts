@@ -14,6 +14,10 @@ class ControlsDriver {
     clickStep() {
         this.stepButton.simulate('click');
     }
+
+    clickRun() {
+        this.runButton.simulate('click');
+    }
 }
 
 export default ControlsDriver;

@@ -28,6 +28,15 @@ describe('Controls', () => {
         expect(controlsDriver.runButton.text()).toEqual('Run');
     });
 
+    it('renders stop button', () => {
+        const controlsDriver = renderControls({
+            onStep: jest.fn,
+            onRun: jest.fn
+        });
+
+        expect(controlsDriver.runButton.text()).toEqual('Run');
+    });
+
     it('fires onStep when step button clicked', () => {
         const onStep = jest.fn();
 

@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Game from './components/Game';
 import reportWebVitals from './reportWebVitals';
+import {config} from './config';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Game rowSize={50} colSize={50} />
+    <Game rowSize={config.rowSize} colSize={config.colSize} />
   </React.StrictMode>,
   document.getElementById('root')
 );

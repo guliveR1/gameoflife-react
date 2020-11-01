@@ -2,6 +2,7 @@ import Board from '../Board';
 import Controls from '../Controls';
 import React from 'react';
 import GameModel from './models/game';
+import { config } from '../../config';
 
 export interface GameState {
   gameBoard: GameModel
@@ -30,14 +31,18 @@ class Game extends React.Component<GameProps, GameState> {
 
     this.setState({
       gameBoard: this.state.gameBoard
-    })
+    });
+  }
+
+  handleRun() {
+    setInterval(this.handleStep.bind(this), config.runInterval);
   }
 
   render() {
     return (
       <div>
         <Board data-hook="board" gameBoard={this.state.gameBoard.board} onCellClick={this.handleCellClick.bind(this)} />
-        <Controls data-hook="controls" onStep={this.handleStep.bind(this)} onRun={() => console.log('run')} />
+        <Controls data-hook="controls" onStep={this.handleStep.bind(this)} onRun={(this.handleRun.bind(this))} />
       </div>
     );
   }
