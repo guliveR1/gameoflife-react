@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Game from './Game';
+import Game from './components/Game';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Game />
+    <Game rowSize={50} colSize={50} />
   </React.StrictMode>,
   document.getElementById('root')
 );

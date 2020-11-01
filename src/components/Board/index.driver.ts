@@ -6,7 +6,15 @@ class BoardDriver {
     constructor(private wrapper: ReactWrapper){}
 
     get rows() {
-        return this.wrapper.find(Row);
+        return this.wrapper.find(Row).map(row => new RowDriver(row));
+    }
+
+    get rowSize() {
+        return this.rows.length;
+    }
+
+    get colSize() {
+        return this.rowAt(0).cells.length;
     }
 
     rowAt(rowIndex: number): RowDriver {

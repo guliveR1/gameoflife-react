@@ -10,6 +10,10 @@ class ControlsDriver {
     get runButton() {
         return this.wrapper.find('[data-hook="runButton"]');
     }
+
+    clickStep() {
+        this.stepButton.simulate('click');
+    }
 }
 
 export default ControlsDriver;

@@ -1,5 +1,6 @@
 import Cell from '../Cell';
 import React from 'react';
+import './index.css';
 
 export interface RowProps {
   rowIndex: number,
@@ -23,7 +24,7 @@ const Row = ({rowIndex, cells, onCellClick}: RowProps) => {
     );
   };
 
-  return <>{renderCells(cells)}</>;
+  return <div className="row">{renderCells(cells)}</div>;
 };
 
 export default Row;

@@ -1,5 +1,5 @@
 import { ReactWrapper } from 'enzyme';
-import Cell from '../Cell';
+import Cell, { CellProps } from '../Cell';
 import CellDriver from '../Cell/index.driver';
 
 class RowDriver {
@@ -8,7 +8,7 @@ class RowDriver {
 
   get cells(): CellDriver[] {
     return this.wrapper.find(Cell).map(
-      (cellWrapper: ReactWrapper) => new CellDriver(cellWrapper)
+      (cellWrapper: ReactWrapper<CellProps>) => new CellDriver(cellWrapper)
     );
   }
 

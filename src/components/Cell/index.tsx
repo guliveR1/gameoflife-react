@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.css';
 
 export interface CellProps {
   isAlive: boolean,
@@ -9,7 +10,7 @@ export interface CellProps {
 const Cell = ({isAlive, cellIndex, onCellClick}: CellProps) => {
   return (<div
     data-hook="cell"
-    className={isAlive ? 'alive' : ''}
+    className={'cell' + (isAlive ? ' alive' : '')}
     onClick={() => onCellClick(cellIndex)}
   ></div>);
 }
